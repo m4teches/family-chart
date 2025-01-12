@@ -25,6 +25,8 @@ function EditTree(cont, store) {
 
   this.onChange = null
 
+  this.onAdd = null
+
   this.editFirst = false
 
   this.init()
@@ -92,6 +94,7 @@ EditTree.prototype.cardEditForm = function(datum) {
   this.openForm()
 
   function postSubmit(props) {
+    // console.log(datum);
     if (this.addRelativeInstance.is_active) this.addRelativeInstance.onChange(datum)
     else if (!props?.delete) this.openFormWithId(datum.id);
 
@@ -100,6 +103,8 @@ EditTree.prototype.cardEditForm = function(datum) {
     this.store.updateTree({})
 
     this.updateHistory()
+
+    if (this.onAdd) this.onAdd(datum);
   }
 }
 
@@ -204,6 +209,12 @@ EditTree.prototype.setFields = function(fields) {
 
 EditTree.prototype.setOnChange = function(fn) {
   this.onChange = fn
+
+  return this
+}
+
+EditTree.prototype.setOnAdd = function(fn) {
+  this.onAdd = fn
 
   return this
 }
